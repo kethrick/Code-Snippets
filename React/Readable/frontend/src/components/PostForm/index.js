@@ -46,16 +46,15 @@ const PostForm = ({post, handleChange, handleSubmit}) => {
                         onChange={handleChange}
                     />
                 </div>
-                <button type="submit" className="btn btn-success btn-lg">
-                    SAVE
-                </button>
+                <button type="submit" className="btn btn-success btn-lg">SAVE</button>&nbsp;&nbsp;
+                <button onClick={this.handlePostEditCancel} className="btn btn-default btn-md">Cancel</button>
             </form>
         </div>
     )
 }
 
 PostForm.propTypes = {
-    post: PropTypes.object.isRequired,
+    post: PropTypes.object,
     handleChange: PropTypes.func.isRequired,
     handleSubmit: PropTypes.func.isRequired
 }

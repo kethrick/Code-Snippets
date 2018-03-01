@@ -17,30 +17,39 @@ import {
     ADD_COMMENT_SUCCESS,
     DELETE_COMMENT_SUCCESS,
     COMMENT_VOTE_UPDATE_SUCCESS,
-    EDIT_COMMENT_SUCCESS
+    EDIT_COMMENT_SUCCESS, 
+    CATEGORY_POST_VOTE_UPDATE_SUCCESS,
+    COMMENT_COUNT_FETCH_SUCCESS
 } from '../constants/action-types'
 
 const rootReducer = (state = initialState, action) => {
     switch (action.type) {
         case CATEGORY_HAS_ERRORED:
-            return action.categoryHasErrored
+            return {
+                ...state, categoryHasErrored: action.categoryHasErrored
+            }
         case CATEGORY_IS_LOADING:
             return action.categoryIsLoading
         case CATEGORY_FETCH_SUCCESS:
             return {
-                ...state, categories: action.categories
+                ...state, categories: action.categories,
+                categoryHasErrored: false
             }
         case POST_HAS_ERRORED:
-            return action.postHasErrored
+            return {
+                ...state, postHasErrored: action.postHasErrored
+            }
         case POST_IS_LOADING:
             return action.postIsLoading
         case POSTS_FETCH_SUCCESS:
             return {
-                ...state, posts: action.posts
+                ...state, posts: action.posts,
+                postHasErrored: false
             }
         case POST_FETCH_SUCCESS:
             return {
-                ...state, post: action.post
+                ...state, post: action.post,
+                postHasErrored: false
             }
         case ADD_POST_SUCCESS:
             return {
@@ -58,13 +67,27 @@ const rootReducer = (state = initialState, action) => {
             return {
                 ...state, posts: [ ...state.posts.filter(post => post.id !== action.payload.id)]
             }
+        case CATEGORY_POST_VOTE_UPDATE_SUCCESS:
+            return {
+                ...state, posts: state.posts.map(
+                    post => post.id === action.payload.id ? { ...post, voteScore: action.payload.voteScore }
+                        : post
+                )
+            }
         case COMMENT_HAS_ERRORED:
-            return action.commentHasErrored
+            return {
+                ...state, commentHasErrored: action.commentHasErrored
+            }
         case COMMENT_IS_LOADING:
             return action.commentIsLoading
         case COMMENTS_FETCH_SUCCESS:
             return {
-                ...state, comments: action.comments
+                ...state, comments: action.comments,
+                commentHasErrored: false
+            }
+        case COMMENT_COUNT_FETCH_SUCCESS:
+            return {
+                ...state, commentCount: action.comments.length
             }
         case ADD_COMMENT_SUCCESS:
             return {

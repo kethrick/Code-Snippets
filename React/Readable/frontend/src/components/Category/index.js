@@ -7,21 +7,21 @@ import { fetchCategoryPosts } from '../../actions/';
 
 class Category extends Component {
     componentDidMount() {
-        this.props.fetchCategoryPosts(this.props.categoryName)
+        this.props.fetchCategoryPosts(this.props.category_name)
     }
 
     render() {
         const {
-            categoryName,
+            category_name,
             posts,
         } = this.props
 
         return (
             <div>
                 <div className="inline col-md-6 offset-md-1">
-                    <h2>{categoryName}</h2>
+                    <h2>{category_name}</h2>
                     <div className="App-intro">
-                        <PostList categoryName={categoryName} posts={posts} />
+                        <PostList category_name={category_name} posts={posts} />
                     </div>
                 </div>
                 <div className="col-md-4 offset-md-1">
@@ -33,17 +33,17 @@ class Category extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const categoryName = typeof ownProps.match !== 'undefined' && typeof ownProps.match.params !== 'undefined' ? ownProps.match.params.categoryName : ownProps.categoryName
-
+    const category_name = typeof ownProps.match !== 'undefined' && typeof ownProps.match.params !== 'undefined' ? ownProps.match.params.category_name : ownProps.category_name
+    
     return {
-        categoryName,
+        category_name,
         posts: state.posts,
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchCategoryPosts: (categoryName) => dispatch(fetchCategoryPosts(categoryName)),
+        fetchCategoryPosts: (category_name) => dispatch(fetchCategoryPosts(category_name)),
     }
 }
 

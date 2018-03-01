@@ -17,7 +17,9 @@ import {
     ADD_COMMENT_SUCCESS,
     DELETE_COMMENT_SUCCESS,
     COMMENT_VOTE_UPDATE_SUCCESS,
-    EDIT_COMMENT_SUCCESS
+    EDIT_COMMENT_SUCCESS,
+    CATEGORY_POST_VOTE_UPDATE_SUCCESS,
+    COMMENT_COUNT_FETCH_SUCCESS
 } from '../constants/action-types'
 
 export function categoryHasErrored(bool) {
@@ -170,15 +172,26 @@ export function fetchPost(id) {
     }
 }
 
-export function postVoteUpdate(data, str) {
+export function postVoteUpdate(data, str, category=false) {
     return (dispatch) => {
         return api.upVote(data, str)
             .then(post => {
-                dispatch(postVoteUpdateSuccess(post))
+                if (category === true) {
+                    dispatch(categoryPostVoteUpdateSuccess(post))
+                } else {
+                    dispatch(postVoteUpdateSuccess(post))
+                }
             })
             .catch(error => {
                 dispatch(postHasErrored(true))
             })
+    }
+}
+
+export function categoryPostVoteUpdateSuccess(post) {
+    return {
+        type: CATEGORY_POST_VOTE_UPDATE_SUCCESS,
+        payload: post
     }
 }
 
@@ -240,6 +253,25 @@ export function fetchPostComments(id) {
             .catch(error => {
                 dispatch(commentHasErrored(true))
             })
+    }
+}
+
+export function fetchPostCommentCount(id) {
+    return (dispatch) => {
+        return api.fetchPostComments(id)
+            .then(comments => {
+                return comments.length
+            })
+            .catch(error => {
+                dispatch(commentHasErrored(true))
+            })
+    }
+}
+
+export function commentCountFetchSuccess(comments) {
+    return {
+        type: COMMENT_COUNT_FETCH_SUCCESS,
+        comments
     }
 }
 

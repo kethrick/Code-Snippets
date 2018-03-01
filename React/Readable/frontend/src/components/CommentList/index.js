@@ -10,7 +10,7 @@ class CommentList extends Component{
     constructor(props, context) {
         super(props, context)
         this.state = {
-            postId: this.props.postId,
+            post_id: this.props.post_id,
             comments: this.props.comments,
             isEditingComment: false,
             comment: null,
@@ -30,7 +30,7 @@ class CommentList extends Component{
     }
 
     componentDidMount() {
-        this.props.fetchPostComments(this.props.postId)
+        this.props.fetchPostComments(this.props.post_id)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -155,16 +155,16 @@ class CommentList extends Component{
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const postId = typeof ownProps.match !== 'undefined' && typeof ownProps.match.params !== 'undefined' ? ownProps.match.params.postId : ownProps.postId
+    const post_id = typeof ownProps.match !== 'undefined' && typeof ownProps.match.params !== 'undefined' ? ownProps.match.params.post_id : ownProps.post_id
     return {
-        postId: postId,
+        post_id: post_id,
         comments: typeof state.comments !== 'undefined' ? state.comments : [],
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchPostComments: (postId) => dispatch(fetchPostComments(postId)),
+        fetchPostComments: (post_id) => dispatch(fetchPostComments(post_id)),
         deleteComment: (comment) => dispatch(deleteComment(comment)),
         postCommentVoteUpdate: (comment, str) => dispatch(postCommentVoteUpdate(comment, str)),
         editComment: (comment) => dispatch(editComment(comment)),

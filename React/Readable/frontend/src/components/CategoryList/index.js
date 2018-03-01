@@ -35,9 +35,9 @@ class CategoryList extends Component {
                     <ul className="list-group list-unstyled">
                         {categories && categories.map((item) => (
                             <li key={item.name}>
-                                <Link to={`/category/${item.name}`}><h2>{item.name}</h2></Link>
+                                <Link to={`/${item.name}`}><h2>{item.name}</h2></Link>
                                 <div className="App-intro">
-                                    <PostList categoryName={item.name} posts={posts && posts.filter(post => post.category === item.name)} />
+                                    <PostList category_name={item.name} posts={posts && posts.filter(post => post.category === item.name)} />
                                 </div>
                             </li>
                         ))}

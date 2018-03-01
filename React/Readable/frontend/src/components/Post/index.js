@@ -6,6 +6,8 @@ import uuidv1 from 'uuid'
 import { fetchPost, editPost, postVoteUpdate, deletePost, addComment } from '../../actions/'
 import PostForm from '../PostForm/'
 import CommentList from '../CommentList/'
+import CommentCount from '../CommentCount/'
+import NoMatch from '../NoMatch/'
 
 class Post extends Component {
     constructor(props, context) {
@@ -16,7 +18,7 @@ class Post extends Component {
             commentsIsLoading: this.props.commentsIsLoading,
             comments: this.props.comments,
             post: this.props.post,
-            postId: this.props.postId,
+            post_id: this.props.post_id,
             postHasErrored: this.props.postHasErrored,
             postIsLoading: this.props.postIsLoading,
             comment: this.props.comment,
@@ -36,12 +38,13 @@ class Post extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchPost(this.props.postId)
+        this.props.fetchPost(this.props.post_id)
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.post !== nextProps.post) {
             this.setState({post: nextProps.post})
+            this.setState({ postHasErrored: nextProps.postHasErrored })
         }
         this.setState({isEditing: false})
     }
@@ -58,15 +61,20 @@ class Post extends Component {
 
     handleChange(event) {
         const field = event.target.id
-        const post = this.state.post
-        post[field] = event.target.value
-        this.setState({post: post})
+        const copyPost = this.state.post
+        copyPost[field] = event.target.value
+        this.setState({ post: copyPost})
     }
 
     handleSubmit(event) {
         event.preventDefault()
         const post = this.state.post
         this.props.editPost(post)
+        this.toggleEdit()
+    }
+
+    handlePostEditCancel(event) {
+        this.toggleEdit()
     }
 
     handleDelete(event) {
@@ -106,12 +114,14 @@ class Post extends Component {
                     <PostForm
                         post={this.state.post}
                         handleChange={this.handleChange}
-                        handleSubmit={this.handleSubmit} />
+                        handleSubmit={this.handleSubmit}
+                        handleCommentEditCancel={this.handleCommentEditCancel}/>
                 </div>
             )
         }
-        if (this.state.postHasErrored) {
-            return <p>Sorry! There was an error loading the post</p>
+        console.log('post index', this.state.postHasErrored)
+        if (typeof this.state.post.error !== 'undefined') {
+            return <NoMatch />
         }
 
         if (this.state.commentsHasErrored) {
@@ -131,6 +141,7 @@ class Post extends Component {
                         Created: {moment(this.state.post.timestamp).format('YYYY-MM-DD')}
                     </p>
                     <p>{this.state.post.body}</p>
+                    <CommentCount post_id={this.state.post_id} />
                     <p>Vote Score:&nbsp;
                         <button className="btn btn-default btn-xs" onClick={this.handleVoteDown}>-</button>&nbsp;{this.state.post.voteScore}&nbsp;<button className="btn btn-default btn-xs" onClick={this.handleVoteUp}>+</button>
                     </p>
@@ -168,7 +179,7 @@ class Post extends Component {
                     </form>
                     <hr />
                     <CommentList 
-                        postId={this.state.postId} 
+                        post_id={this.state.post_id} 
                     />
                 </div>
             </div>
@@ -177,14 +188,14 @@ class Post extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const postId = typeof ownProps.match !== 'undefined' && typeof ownProps.match.params !== 'undefined' ? ownProps.match.params.postId : ownProps.postId
+    const post_id = typeof ownProps.match !== 'undefined' && typeof ownProps.match.params !== 'undefined' ? ownProps.match.params.post_id : ownProps.post_id
     let post = {id:"", title: "", author: "", category: "", timestamp: "", body: "", voteScore: ""}
     let comment = {id: "", author: "", body: "", parentId: "", timestamp: "", voteScore: ""}
     if(typeof state.post !== 'undefined') {
         post = state.post
     }
     return {
-        postId: postId,
+        post_id: post_id,
         post: post,
         postHasErrored: state.postHasErrored,
         postIsLoading: state.postIsLoading,
@@ -197,7 +208,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchPost: (postId) => dispatch(fetchPost(postId)),
+        fetchPost: (post_id) => dispatch(fetchPost(post_id)),
         editPost: (post) => dispatch(editPost(post)),
         postVoteUpdate: (post, str) => dispatch(postVoteUpdate(post, str)),
         deletePost: (post) => dispatch(deletePost(post)),
