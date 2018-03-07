@@ -19,8 +19,10 @@ class AddQuestion extends Component {
         const question = this.state.question
         const answer = this.state.answer
         this.props.dispatch(addQuestion(title, { question, answer }))
-        this.props.navigation.goBack();
-        addCardToDeck(title, { question, answer });
+        //this.props.navigation.goBack()
+        addCardToDeck(title, { question, answer })
+        this.setState(() => ({ question: "" }))
+        this.setState(() => ({ answer: "" }))
     }
 
     render() {

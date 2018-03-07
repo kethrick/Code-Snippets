@@ -4,15 +4,13 @@
     "\\api-server",
     "\\frontend",
     "\\frontend\\src",
+    "\\frontend\\src\\actions",
     "\\frontend\\src\\components",
-    "\\frontend\\src\\components\\CommentList",
-    "\\frontend\\src\\components\\PostForm",
-    "\\frontend\\src\\components\\PostList",
-    "\\frontend\\src\\constants",
-    "\\frontend\\src\\reducers",
-    "\\frontend\\src\\store",
-    "\\frontend\\src\\utils"
+    "\\frontend\\src\\components\\Category",
+    "\\frontend\\src\\components\\CategoryList",
+    "\\frontend\\src\\components\\Post",
+    "\\frontend\\src\\components\\PostList"
   ],
-  "SelectedNode": "\\frontend\\README.md",
+  "SelectedNode": "\\frontend\\src\\components\\Category\\index.js",
   "PreviewInSolutionExplorer": false
 }

@@ -41,6 +41,12 @@ class Quiz extends Component {
         this.props.navigation.goBack()
     }
 
+    restartQuiz = () => {
+        this.setState({ index: 0 })
+        this.setState({ score: 0 })
+        this.setState({ done: false })
+    }
+
     render() {
         const title = this.props.navigation.state.params.title
         const questions = this.props.deck.questions
@@ -52,12 +58,20 @@ class Quiz extends Component {
                     <Text style={styles.title}>
                         Result: {Math.floor(score / questions.length * 100)}%
                     </Text>
-                    <TouchableOpacity
-                        style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
-                        onPress={this.backToDeck}
-                    >
-                        <Text style={styles.submitBtnText}>Back to Deck</Text>
-                    </TouchableOpacity>
+                    <View style={styles.row}>
+                        <TouchableOpacity
+                            style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
+                            onPress={this.restartQuiz}
+                        >
+                            <Text style={styles.submitBtnText}>Restart Quiz</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.AndroidSubmitBtn}
+                            onPress={this.backToDeck}
+                        >
+                            <Text style={styles.submitBtnText}>Back to Deck</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             )
         }
@@ -77,6 +91,12 @@ class Quiz extends Component {
 const styles = StyleSheet.create({
     title: {
         fontSize: 30
+    },
+    row: {
+        flexDirection: 'row',
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     container: {
         flex: 1,

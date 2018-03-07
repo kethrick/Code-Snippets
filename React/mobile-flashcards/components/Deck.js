@@ -13,6 +13,12 @@ class Deck extends Component{
         const data = await getDeck(this.props.navigation.state.params.title)
         dispatch(fetchDeck(data))
     }
+    
+    async componentDidUpdate() {
+        const { dispatch } = this.props
+        const data = await getDeck(this.props.navigation.state.params.title)
+        dispatch(fetchDeck(data))
+    }
 
     addQuestion = (title) => {
         this.props.navigation.navigate("AddQuestion", {
