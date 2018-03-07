@@ -164,7 +164,12 @@ export function fetchPost(id) {
         return api.fetchPost(id)
             .then(postIsLoading(false))
             .then(post => {
-                dispatch(postFetchSuccess(post))
+                if (typeof post.id === 'undefined') {
+                    dispatch(postHasErrored(true))
+                } else {
+                    dispatch(postHasErrored(false))
+                    dispatch(postFetchSuccess(post))
+                }
             })
             .catch(error => {
                 dispatch(postHasErrored(true))

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
-import { fetchCategories, fetchPosts } from '../../actions/';
+import { fetchCategories, fetchPosts } from '../../actions/'
 import PostList from '../PostList/'
 
 class CategoryList extends Component {
@@ -31,6 +31,9 @@ class CategoryList extends Component {
         }
         return (
             <div>
+                <div className="inline col-md-8 offset-md-1">
+                    <strong>Home</strong>
+                </div>
                 <div className="inline col-md-8 offset-md-1">
                     <ul className="list-group list-unstyled">
                         {categories && categories.map((item) => (

@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom'
 
 const NoMatch = ({ location }) => (
     <div className="inline col-md-8 offset-md-1">
+        <div>
+            <Link to='/'><strong>Home</strong></Link>
+        </div>
         <h1>404 not found</h1>
         <p>Nothing to see here</p>
         <p><Link to="/">Back to Home</Link></p>

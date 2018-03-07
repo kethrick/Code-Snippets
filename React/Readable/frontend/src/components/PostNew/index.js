@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 import moment from 'moment'
 import uuidv1 from "uuid"
+import { Link } from 'react-router-dom'
 
 import { addPost } from "../../actions/index"
 import PostForm from '../PostForm'
@@ -29,11 +30,16 @@ class PostNew extends Component {
         
         const id = uuidv1()
         const timestamp = moment().valueOf()
-        this.props.addPost({ id, title, author, body, category, timestamp })
-        this.setState({ title: "" })
-        this.setState({ body: "" })
-        this.setState({ author: "" })
-        this.setState({ category: "" })
+        if (author !== '' && body !== '' &&
+            title !== '' && category !== '') {
+            this.props.addPost({ id, title, author, body, category, timestamp })
+            this.setState({ title: "" })
+            this.setState({ body: "" })
+            this.setState({ author: "" })
+            this.setState({ category: "" })
+        } else {
+            alert('Oops looks like you missed some fields')
+        }
     }
 
     render() {
@@ -41,11 +47,16 @@ class PostNew extends Component {
 
         return (
             <div className="inline col-md-6 offset-md-1">
-                <h3>Add Post</h3>
-                <PostForm
-                    post={post}
-                    handleChange={this.handleChange}
-                    handleSubmit={this.handleSubmit} />
+                <div>
+                    <Link to='/'><strong>Home</strong></Link>
+                </div>
+                <div>
+                    <h3>Add Post</h3>
+                    <PostForm
+                        post={post}
+                        handleChange={this.handleChange}
+                        handleSubmit={this.handleSubmit} />
+                </div>
             </div>
         )
     }

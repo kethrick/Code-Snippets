@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, withRouter} from 'react-router-dom'
 import moment from 'moment'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
@@ -88,7 +88,6 @@ class PostList extends Component {
 
     handlePostEditChange(event) {
         const field = event.target.id
-        console.log(field)
         const copyPost = this.state.post
         copyPost[field] = event.target.value
         this.setState({ post: copyPost })
@@ -201,4 +200,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default connect(null, mapDispatchToProps)(PostList)
+export default withRouter(connect(null, mapDispatchToProps)(PostList))
